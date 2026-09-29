@@ -35,7 +35,7 @@ files. Don't update `STATUS.md` with claims you haven't verified.
   what it picks up.
 - Commit when asked, or propose a commit at the end of `/wrapup` and wait for a
   yes.
-- Pushes need approval (enforced in settings).
+- Pushes need approval (enforced by the confirm-push hook and a settings rule).
 - Never rewrite history that has been pushed without asking first.
 
 ## Scope

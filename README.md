@@ -19,7 +19,7 @@ This setup counters each of those with a small number of pieces:
 | Losing the thread between sessions or after compaction | A session-start hook injects git state, `docs/STATUS.md`, and open TODOs automatically |
 | Claiming work is done when it isn't | Conventions require evidence (command, result, commit) for every status claim |
 | Grading its own work | A read-only `verifier` subagent checks claims in a fresh context |
-| Pushing unreviewed work | `git push` always asks for approval (enforced in settings, not just instructed) |
+| Pushing unreviewed work | Every `git push` asks for approval (enforced by a hook and a settings rule, not just instructed) |
 
 ## What's in it
 
@@ -28,7 +28,9 @@ claude/
 ├── CLAUDE.md                  # conventions for every project
 ├── settings.json              # merged into ~/.claude/settings.json
 ├── agents/verifier.md         # read-only skeptic subagent
-├── hooks/session-start.sh     # prints project state at session start
+├── hooks/
+│   ├── session-start.sh       # prints project state at session start
+│   └── confirm-push.sh        # asks before any git push, in any form
 └── skills/
     ├── wrapup/                # /wrapup: verify, update state files, propose commit
     └── new-project/           # /new-project: scaffold a repo for this workflow
@@ -112,8 +114,12 @@ The optional note says what the session was for. If the repo has no
   the branch, uncommitted changes, the last 5 commits, the first 40 lines of
   `docs/STATUS.md`, and the first 8 open TODOs. It prints nothing outside git
   repos.
-- **`git push`** (including `git -C <dir> push`) asks for my approval every
-  time.
+- **Every git push asks for my approval**, whatever form it takes (`git push`,
+  `git -C <dir> push`, `git -c k=v push`, or chained after `&&` or `;`). The
+  `confirm-push.sh` hook checks each Bash command before it runs. The
+  `Bash(git push:*)` rule in settings is a second layer that only catches
+  commands starting with `git push`. The hook errs toward asking, so a command
+  like `git log --grep push` also prompts.
 
 ## Install
 
