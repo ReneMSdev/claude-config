@@ -56,6 +56,65 @@ session.
    what was claimed, updates the state files with only verified facts, and
    proposes a commit.
 
+## Commands
+
+What I type, and what happens.
+
+| Command | Where | What it does |
+|---|---|---|
+| `/new-project [description]` | In Claude Code, once per repo | Sets up a repo for this workflow (details below) |
+| `/wrapup [note]` | In Claude Code, at the end of a work session | Checks the session's work, updates the state files, proposes a commit (details below) |
+| "have the verifier check …" | In Claude Code, any time | Runs the `verifier` subagent on whatever claims or changes I name |
+| `~/Dev/claude-config/install.sh` | Terminal | Links this repo into `~/.claude/` and merges settings |
+
+Claude never starts `/new-project` or `/wrapup` by itself. I have to type
+them.
+
+### `/new-project [description]`
+
+Works on new and existing repos. The optional description is a one-line
+summary of the project.
+
+1. **Surveys the repo:** stack, layout (including monorepos), commands from
+   manifests and CI, existing Claude files, and old tracking docs (STATUS,
+   TODO, HANDOFF, and so on).
+2. **Asks me** only what it couldn't work out: the project's stage, whether
+   the detected commands are right, project-specific rules, whether any role
+   needs its own agent file, and what to do with old tracking docs.
+3. **Creates the files:** root `CLAUDE.md` (or proposes additions if one
+   exists, and never overwrites it), a `CLAUDE.md` for each app in a
+   monorepo, `docs/STATUS.md`, `docs/TODO.md`, `docs/decisions.md`,
+   `.claude/settings.json` with allow rules for the check commands, and
+   `.gitignore` entries for local-only Claude files.
+4. **Runs the tests once** so STATUS starts with at least one verified fact,
+   then proposes a commit with explicit paths and waits for my yes.
+
+### `/wrapup [note]`
+
+The optional note says what the session was for. If the repo has no
+`docs/STATUS.md`, it stops and suggests `/new-project`.
+
+1. **Lists claims:** what the session did, from `git status`, the diff, and
+   new commits, including things that were tried and didn't work.
+2. **Runs the checks** from the **Commands** table in the project's
+   `CLAUDE.md`, only for areas that changed, and records the real results.
+3. **Sends the claims and results to `verifier`**, which marks each one
+   CONFIRMED, REFUTED, or UNVERIFIED. Refuted claims don't get recorded as
+   done.
+4. **Updates the state files** with verified facts only: rewrites
+   `STATUS.md`, checks off and adds to `TODO.md`, and appends real decisions
+   to `decisions.md`.
+5. **Reports and proposes a commit**, then waits for my yes. It never pushes.
+
+### Automatic behavior
+
+- **Every session start** (and after context compaction), the hook prints
+  the branch, uncommitted changes, the last 5 commits, the first 40 lines of
+  `docs/STATUS.md`, and the first 8 open TODOs. It prints nothing outside git
+  repos.
+- **`git push`** (including `git -C <dir> push`) asks for my approval every
+  time.
+
 ## Install
 
 ```sh
