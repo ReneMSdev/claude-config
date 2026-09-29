@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "{{Bash(<test command>:*)}}",
+      "{{Bash(<lint command>:*)}}"
+    ]
+  }
+}
