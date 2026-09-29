@@ -118,7 +118,7 @@ The optional note says what the session was for. If the repo has no
 ## Install
 
 ```sh
-git clone <this repo> ~/Dev/claude-config
+git clone https://github.com/ReneMSdev/claude-config.git ~/Dev/claude-config
 ~/Dev/claude-config/install.sh
 ```
 
