@@ -1,6 +1,6 @@
 ---
 name: verifier
-description: Independently checks claims that work is done or correct, against the code, tests, and git history. Use before marking work complete or updating docs/STATUS.md. Pass it the list of claims and which changes to look at.
+description: Independently checks claims that work is done or correct, against the code, tests, and git history. Use before marking work complete or updating docs/status.md. Pass it the list of claims and which changes to look at.
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit, NotebookEdit
 ---

@@ -16,7 +16,7 @@ This setup counters each of those with a small number of pieces:
 
 | Failure | Countermeasure |
 |---|---|
-| Losing the thread between sessions or after compaction | A session-start hook injects git state, `docs/STATUS.md`, and open TODOs automatically |
+| Losing the thread between sessions or after compaction | A session-start hook injects git state, `docs/status.md`, and open TODOs automatically |
 | Claiming work is done when it isn't | Conventions require evidence (command, result, commit) for every status claim |
 | Grading its own work | A read-only `verifier` subagent checks claims in a fresh context |
 | Pushing unreviewed work | Every `git push` asks for approval (enforced by a hook and a settings rule, not just instructed) |
@@ -34,7 +34,7 @@ claude/
 └── skills/
     ├── wrapup/                # /wrapup: verify, update state files, propose commit
     └── new-project/           # /new-project: scaffold a repo for this workflow
-        └── templates/         # CLAUDE.md, STATUS.md, TODO.md, decisions.md, settings.json
+        └── templates/         # CLAUDE.md, status.md, todo.md, decisions.md, settings.json
 ```
 
 ### Per-project files (created by `/new-project`)
@@ -42,8 +42,8 @@ claude/
 | File | Answers | Changes by |
 |---|---|---|
 | `CLAUDE.md` | What is this, how do I run and check it, what are the rules? | Rarely |
-| `docs/STATUS.md` | Where do things stand now, with evidence? | Rewritten by `/wrapup` |
-| `docs/TODO.md` | What's next and later? | Checked off and extended by `/wrapup` |
+| `docs/status.md` | Where do things stand now, with evidence? | Rewritten by `/wrapup` |
+| `docs/todo.md` | What's next and later? | Checked off and extended by `/wrapup` |
 | `docs/decisions.md` | Why is it this way? | Appended |
 
 These live in each repo, so they travel with it to any machine or cloud
@@ -85,7 +85,7 @@ summary of the project.
    needs its own agent file, and what to do with old tracking docs.
 3. **Creates the files:** root `CLAUDE.md` (or proposes additions if one
    exists, and never overwrites it), a `CLAUDE.md` for each app in a
-   monorepo, `docs/STATUS.md`, `docs/TODO.md`, `docs/decisions.md`,
+   monorepo, `docs/status.md`, `docs/todo.md`, `docs/decisions.md`,
    `.claude/settings.json` with allow rules for the check commands, and
    `.gitignore` entries for local-only Claude files.
 4. **Runs the tests once** so STATUS starts with at least one verified fact,
@@ -94,7 +94,7 @@ summary of the project.
 ### `/wrapup [note]`
 
 The optional note says what the session was for. If the repo has no
-`docs/STATUS.md`, it stops and suggests `/new-project`.
+`docs/status.md`, it stops and suggests `/new-project`.
 
 1. **Lists claims:** what the session did, from `git status`, the diff, and
    new commits, including things that were tried and didn't work.
@@ -104,7 +104,7 @@ The optional note says what the session was for. If the repo has no
    CONFIRMED, REFUTED, or UNVERIFIED. Refuted claims don't get recorded as
    done.
 4. **Updates the state files** with verified facts only: rewrites
-   `STATUS.md`, checks off and adds to `TODO.md`, and appends real decisions
+   `status.md`, checks off and adds to `todo.md`, and appends real decisions
    to `decisions.md`.
 5. **Reports and proposes a commit**, then waits for my yes. It never pushes.
 
@@ -112,7 +112,7 @@ The optional note says what the session was for. If the repo has no
 
 - **Every session start** (and after context compaction), the hook prints
   the branch, uncommitted changes, the last 5 commits, the first 40 lines of
-  `docs/STATUS.md`, and the first 8 open TODOs. It prints nothing outside git
+  `docs/status.md`, and the first 8 open TODOs. It prints nothing outside git
   repos.
 - **Every git push asks for my approval**, whatever form it takes (`git push`,
   `git -C <dir> push`, `git -c k=v push`, or chained after `&&` or `;`). The

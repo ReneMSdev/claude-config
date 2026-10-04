@@ -23,4 +23,4 @@
 
 ## State
 
-Current state: `docs/STATUS.md`. Backlog: `docs/TODO.md`. Decisions: `docs/decisions.md`.
+Current state: `docs/status.md`. Backlog: `docs/todo.md`. Decisions: `docs/decisions.md`.

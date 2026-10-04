@@ -9,7 +9,7 @@ cd "$dir" 2>/dev/null || exit 0
 in_git=false
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 && in_git=true
 has_docs=false
-[ -f docs/STATUS.md ] || [ -f docs/TODO.md ] && has_docs=true
+[ -f docs/status.md ] || [ -f docs/todo.md ] && has_docs=true
 
 $in_git || $has_docs || exit 0
 
@@ -30,14 +30,14 @@ if $in_git; then
   git log --oneline -5 2>/dev/null
 fi
 
-if [ -f docs/STATUS.md ]; then
+if [ -f docs/status.md ]; then
   echo
-  echo "### docs/STATUS.md (first 40 lines)"
-  head -40 docs/STATUS.md
+  echo "### docs/status.md (first 40 lines)"
+  head -40 docs/status.md
 fi
 
-if [ -f docs/TODO.md ]; then
-  open=$(grep -E '^\s*- \[ \]' docs/TODO.md)
+if [ -f docs/todo.md ]; then
+  open=$(grep -E '^\s*- \[ \]' docs/todo.md)
   if [ -n "$open" ]; then
     echo
     echo "### Open TODOs ($(printf '%s\n' "$open" | wc -l | tr -d ' ') total, first 8)"
@@ -47,7 +47,7 @@ fi
 
 if $in_git && ! $has_docs; then
   echo
-  echo "(No docs/STATUS.md here. /new-project can set up the state files.)"
+  echo "(No docs/status.md here. /new-project can set up the state files.)"
 fi
 
 exit 0

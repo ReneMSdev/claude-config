@@ -18,5 +18,5 @@ _Last verified: {{YYYY-MM-DD}} at {{short commit hash}}_
 Rules for this file:
 - Rewrite it to describe the current state. It isn't a log; history lives in git.
 - Every "passing" or "works" claim needs evidence from a run, or it's marked unverified.
-- Future work goes in TODO.md, and reasons in decisions.md.
+- Future work goes in todo.md, and reasons in decisions.md.
 -->

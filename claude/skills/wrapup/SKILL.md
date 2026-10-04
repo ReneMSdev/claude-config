@@ -1,13 +1,13 @@
 ---
 name: wrapup
-description: End-of-session accountability. Runs the project's checks, has the verifier subagent confirm what was done, updates docs/STATUS.md, docs/TODO.md, and docs/decisions.md with evidence, then proposes a commit.
+description: End-of-session accountability. Runs the project's checks, has the verifier subagent confirm what was done, updates docs/status.md, docs/todo.md, and docs/decisions.md with evidence, then proposes a commit.
 disable-model-invocation: true
 argument-hint: "[optional note about what this session was for]"
 ---
 
 Wrap up this work session. Session note from the user (may be empty): $ARGUMENTS
 
-If `docs/STATUS.md` doesn't exist, stop and suggest running `/new-project` first.
+If `docs/status.md` doesn't exist, stop and suggest running `/new-project` first.
 
 ## 1. Gather what changed
 
@@ -41,9 +41,9 @@ CLAUDE.md, e.g. `pytest: 122 passed (a1b2c3d, 2026-09-28)`. Use today's date
 and the current short commit hash (note "uncommitted" when the changes aren't
 committed yet).
 
-- **`docs/STATUS.md`**: update the affected sections so they describe the
+- **`docs/status.md`**: update the affected sections so they describe the
   current state. Rewrite, don't append a log. Update the "Last verified" line.
-- **`docs/TODO.md`**: check off finished items (move them to "Done recently",
+- **`docs/todo.md`**: check off finished items (move them to "Done recently",
   keeping only about the last 10). Add follow-ups discovered this session under
   the right heading, and remove items that are no longer relevant.
 - **`docs/decisions.md`**: append an entry for each real decision made this

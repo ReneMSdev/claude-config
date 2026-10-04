@@ -7,8 +7,8 @@ where the two conflict.
 
 Projects set up with `/new-project` keep their state in three files:
 
-- `docs/STATUS.md`: where things stand now, with evidence. Rewritten, not appended.
-- `docs/TODO.md`: what's next and later. A checklist.
+- `docs/status.md`: where things stand now, with evidence. Rewritten, not appended.
+- `docs/todo.md`: what's next and later. A checklist.
 - `docs/decisions.md`: why things are the way they are. Append-only.
 
 A session-start hook prints a summary of these plus git state. Treat them as a
@@ -16,7 +16,7 @@ starting point, not ground truth: if they disagree with the code or git
 history, say so instead of trusting the docs.
 
 Run `/wrapup` at the end of a work session to verify the work and update these
-files. Don't update `STATUS.md` with claims you haven't verified.
+files. Don't update `status.md` with claims you haven't verified.
 
 ## Verification
 
@@ -41,7 +41,7 @@ files. Don't update `STATUS.md` with claims you haven't verified.
 ## Scope
 
 - Do what was asked. When you notice something else worth doing, add it to
-  `docs/TODO.md` or mention it, rather than doing it unasked.
+  `docs/todo.md` or mention it, rather than doing it unasked.
 - Ask when a decision is genuinely mine to make; otherwise pick the sensible
   default and say which one you picked.
 
