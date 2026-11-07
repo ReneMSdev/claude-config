@@ -19,9 +19,15 @@ If `docs/status.md` doesn't exist, stop and suggest running `/new-project` first
 
 ## 2. Run the checks
 
-- Run the check commands listed under **Commands** in the project's
-  `CLAUDE.md` (tests, lint, type-check, build) for the areas that changed.
-  Skip areas nothing touched, and say you skipped them.
+- Map the changed paths (from step 1, including this session's commits) to
+  areas. In a project with sides like `backend/` and `frontend/`, run the
+  check commands listed under **Commands** in the project's `CLAUDE.md`
+  (tests, lint, type-check, build) only for the sides with changed files.
+  Skip the others, and say you skipped them.
+- **Doc-only session** (only `*.md`, `docs/`, `.claude/` prompt or agent
+  files, or other files no check reads): run no checks. Say so, and keep the
+  existing evidence in `docs/status.md` as it is, since nothing it covers
+  changed.
 - Record each command's actual result. If a command can't run here (missing
   service, credentials), record it as not run and why.
 
@@ -29,7 +35,11 @@ If `docs/status.md` doesn't exist, stop and suggest running `/new-project` first
 
 Send the `verifier` subagent the claim list, the check results, and which
 changes to look at. Don't skip this for non-trivial work: the point is that
-the agent who did the work doesn't grade it.
+the agent who did the work doesn't grade it. Scale the request to the
+session: for a doc-only session, ask it only to confirm the doc claims
+against the diff (no test runs). If the verifier already checked this
+session's claims (e.g. a manager ran it per feature), don't run it again;
+cite that result and verify only claims it didn't cover.
 
 If the verifier refutes a claim, don't record it as done. Tell the user, and
 either fix it (if small and clearly in scope) or record it as an open issue.
