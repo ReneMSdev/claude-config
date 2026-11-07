@@ -27,7 +27,9 @@ files. Don't update `status.md` with claims you haven't verified.
 - If something couldn't be verified, mark it **unverified** and say why. An
   honest gap is better than a confident guess.
 - Before calling non-trivial work complete, have the `verifier` subagent check
-  the claims. Don't grade your own work.
+  the claims. Don't grade your own work. When a manager session delegates to
+  worker agents, the manager runs the verifier, once per feature; workers don't
+  run their own.
 
 ## Git
 
