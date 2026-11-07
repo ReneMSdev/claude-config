@@ -19,7 +19,7 @@ This setup counters each of those with a small number of pieces:
 | Losing the thread between sessions or after compaction | A session-start hook injects git state, `docs/status.md`, and open TODOs automatically |
 | Claiming work is done when it isn't | Conventions require evidence (command, result, commit) for every status claim |
 | Grading its own work | A read-only `verifier` subagent checks claims in a fresh context |
-| Pushing unreviewed work | Every `git push` asks for approval (enforced by a hook and a settings rule, not just instructed) |
+| Pushing unreviewed work | Every `git push` asks for approval (enforced by a hook, not just instructed), except plain pushes of branches a repo lists in `.claude/push-branches` |
 
 ## What's in it
 
@@ -116,10 +116,14 @@ The optional note says what the session was for. If the repo has no
   repos.
 - **Every git push asks for my approval**, whatever form it takes (`git push`,
   `git -C <dir> push`, `git -c k=v push`, or chained after `&&` or `;`). The
-  `confirm-push.sh` hook checks each Bash command before it runs. The
-  `Bash(git push:*)` rule in settings is a second layer that only catches
-  commands starting with `git push`. The hook errs toward asking, so a command
-  like `git log --grep push` also prompts.
+  `confirm-push.sh` hook checks each Bash command before it runs. It errs toward
+  asking, so a command like `git log --grep push` also prompts.
+- **Opt-in exception:** a repo can list branches in `.claude/push-branches`
+  (one per line). In that repo, a single plain `git push [-u] origin <branch>`
+  for a listed branch runs without a prompt. Force pushes, deletes, refspecs,
+  other remotes, chained commands and repos without the file still ask. There's
+  no `Bash(git push:*)` settings rule: an ask rule can't be lifted per repo, and
+  the hook already catches every push it did.
 
 ## Install
 
