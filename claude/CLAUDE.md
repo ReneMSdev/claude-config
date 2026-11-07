@@ -37,7 +37,9 @@ files. Don't update `status.md` with claims you haven't verified.
   what it picks up.
 - Commit when asked, or propose a commit at the end of `/wrapup` and wait for a
   yes.
-- Pushes need approval (enforced by the confirm-push hook and a settings rule).
+- Pushes need approval (enforced by the confirm-push hook). A repo can opt in
+  with `.claude/push-branches`: plain pushes of the branches it lists skip the
+  permission prompt, but still ask me in chat first.
 - Never rewrite history that has been pushed without asking first.
 
 ## Scope
