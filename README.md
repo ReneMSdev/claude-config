@@ -135,7 +135,8 @@ git clone https://github.com/ReneMSdev/claude-config.git ~/Dev/claude-config
 The installer symlinks `CLAUDE.md`, agents, skills, and hooks into
 `~/.claude/`, so editing files here takes effect immediately. It merges
 `settings.json` rather than linking it, because Claude Code writes its own
-settings there. Anything it would replace is moved aside to `*.bak-<timestamp>`.
+settings there. It also sets `attribution` (no `Co-Authored-By` trailer, PR
+footer or session link on commits and PRs). Anything it would replace is moved aside to `*.bak-<timestamp>`.
 It's safe to re-run.
 
 Then, in any repo: `/new-project`.

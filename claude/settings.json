@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "ask": []
   },
@@ -6,7 +11,10 @@
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "$HOME/.claude/hooks/session-start.sh" }
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/session-start.sh"
+          }
         ]
       }
     ],
@@ -14,7 +22,10 @@
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "$HOME/.claude/hooks/confirm-push.sh" }
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/confirm-push.sh"
+          }
         ]
       }
     ]

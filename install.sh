@@ -50,6 +50,11 @@ for event, groups in src.get("hooks", {}).items():
         if not any(h.get("command") in existing for h in g.get("hooks", [])):
             have.append(g)
 
+# Top-level settings this repo owns outright (e.g. attribution): repo value wins.
+for key in ("attribution",):
+    if key in src:
+        dest[key] = src[key]
+
 if json.dumps(dest, sort_keys=True) == before:
     print("  ok       settings already up to date")
 else:
@@ -58,6 +63,6 @@ else:
         print(f"  backup   settings.json -> settings.json.bak-{stamp}")
     json.dump(dest, open(dest_path, "w"), indent=2)
     open(dest_path, "a").write("\n")
-    print("  merged   permissions + hooks")
+    print("  merged   permissions, hooks, attribution")
 PY
 echo "Done. New sessions pick this up; running sessions may need a restart for hooks."
