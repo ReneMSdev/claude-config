@@ -123,8 +123,11 @@ The optional note says what the session was for. If the repo has no
   `confirm-push.sh` hook checks each Bash command before it runs. It errs toward
   asking, so a command like `git log --grep push` also prompts.
 - **Opt-in exception:** a repo can list branches in `.claude/push-branches`
-  (one per line). In that repo, a single plain `git push [-u] origin <branch>`
-  for a listed branch runs without a prompt. Force pushes, deletes, refspecs,
+  (one name or glob pattern per line, such as `claude/*`). The wildcards are `*`
+  and `?` only: a line containing `[` or `]` is ignored, and so is a pattern with
+  no letter or digit besides its wildcards. In that repo, a single plain
+  `git push [-u] origin <branch>` for a listed or matching branch runs without a
+  prompt. Force pushes, deletes, refspecs,
   other remotes, chained commands and repos without the file still ask. There's
   no `Bash(git push:*)` settings rule: an ask rule can't be lifted per repo, and
   the hook already catches every push it did.

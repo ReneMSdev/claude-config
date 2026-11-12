@@ -5,13 +5,20 @@
 # Errs toward asking: a false positive costs one extra prompt.
 #
 # Opt-in exception: a repo whose root has .claude/push-branches (one branch name
-# per line, # comments allowed) may push those branches without a prompt, but only
-# as a single plain command: `git push [-u|--set-upstream] origin <branch>`, run
-# in that repo. Force, delete, refspecs, other remotes, chains and every other
-# form still ask. The agent is expected to ask in chat before pushing.
+# or glob pattern per line, # comments allowed) may push those branches without a
+# prompt, but only as a single plain command:
+# `git push [-u|--set-upstream] origin <branch>`, run in that repo. Force, delete,
+# refspecs, other remotes, chains and every other form still ask. The agent is
+# expected to ask in chat before pushing.
+#
+# Patterns are matched with fnmatch (case-sensitive; * also crosses "/", so
+# claude/* matches claude/a/b). The wildcards are * and ? only: a line containing
+# [ or ] is ignored. A pattern with no letter or digit besides its wildcards
+# (*, ?*, */*) is ignored too. Any other pattern matches whatever it matches
+# (*ain matches main), so keep the lines narrow.
 
 python3 -c '
-import json, os, re, shlex, subprocess, sys
+import fnmatch, json, os, re, shlex, subprocess, sys
 
 ASK = {"hookSpecificOutput": {
     "hookEventName": "PreToolUse",
@@ -59,7 +66,19 @@ def allowed():
             listed = {l.split("#")[0].strip() for l in f}
     except OSError:
         return False
-    return branch in (listed - {""})
+    for entry in listed - {""}:
+        # No bracket classes: a line with [ or ] is ignored, so fnmatch only ever
+        # sees * and ? as wildcards.
+        if "[" in entry or "]" in entry:
+            continue
+        if entry == branch:
+            return True
+        # A pattern line must keep a letter or digit besides its * and ?.
+        if (re.search(r"[*?]", entry)
+                and re.search(r"[A-Za-z0-9]", re.sub(r"[*?]", "", entry))
+                and fnmatch.fnmatchcase(branch, entry)):
+            return True
+    return False
 
 if allowed():
     print(json.dumps({"hookSpecificOutput": {

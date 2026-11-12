@@ -40,8 +40,9 @@ whatever the verifier or a passing gate hasn't already covered. Don't update
 - Commit when asked, or propose a commit at the end of `/wrapup` and wait for a
   yes.
 - Pushes need approval (enforced by the confirm-push hook). A repo can opt in
-  with `.claude/push-branches`: plain pushes of the branches it lists skip the
-  permission prompt, but still ask me in chat first.
+  with `.claude/push-branches`: plain pushes of the branches it lists (names or
+  glob patterns such as `claude/*`) skip the permission prompt, but still ask me
+  in chat first.
 - The two rules above are the default, for projects without an automated
   gate. A project whose `CLAUDE.md` names a gate (one check script that hooks
   and CI both run) may set its own commit and push rule, and that rule wins
