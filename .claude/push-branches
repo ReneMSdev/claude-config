@@ -1,0 +1,3 @@
+# Branches a session may push to origin without a permission prompt (plain
+# `git push origin <branch>` only). Read by claude/hooks/confirm-push.sh.
+main

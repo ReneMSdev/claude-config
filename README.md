@@ -69,8 +69,9 @@ What I type, and what happens.
 | "have the verifier check …" | In Claude Code, any time | Runs the `verifier` subagent on whatever claims or changes I name |
 | `~/Dev/claude-config/install.sh` | Terminal | Links this repo into `~/.claude/` and merges settings |
 
-Claude never starts `/new-project` or `/wrapup` by itself. I have to type
-them.
+Claude never starts `/new-project` by itself; I have to type it. `/wrapup`
+runs when I type it, or at the end of a feature in a project whose `CLAUDE.md`
+or role prompt tells the session to run it.
 
 ### `/new-project [description]`
 
@@ -107,6 +108,9 @@ The optional note says what the session was for. If the repo has no
    `status.md`, checks off and adds to `todo.md`, and appends real decisions
    to `decisions.md`.
 5. **Reports and proposes a commit**, then waits for my yes. It never pushes.
+   In a project whose `CLAUDE.md` lets sessions commit without asking (it
+   names an automated gate), it commits the doc changes itself and pushes
+   only as that project's rule allows.
 
 ### Automatic behavior
 

@@ -16,7 +16,10 @@ You didn't write this code and have no stake in it looking good.
 2. Look at the actual changes: `git status`, `git diff`, `git log`, and the
    files themselves.
 3. For each claim, find evidence that confirms or refutes it:
-   - "Tests pass": run the test command yourself and read the output.
+   - "Tests pass": run the test command yourself and read the output. When the
+     project has one check script (`scripts/check.sh`), run that for the sides
+     that changed instead of picking commands yourself, and quote its summary
+     lines. For a doc-only change, run no tests.
    - "Feature X works": find the code path and check it does what's claimed,
      including edge cases the claim glosses over.
    - "Y was removed/renamed": grep for leftovers.

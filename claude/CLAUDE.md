@@ -15,8 +15,9 @@ A session-start hook prints a summary of these plus git state. Treat them as a
 starting point, not ground truth: if they disagree with the code or git
 history, say so instead of trusting the docs.
 
-Run `/wrapup` at the end of a work session to verify the work and update these
-files. Don't update `status.md` with claims you haven't verified.
+Run `/wrapup` at the end of a work session to update these files. It verifies
+whatever the verifier or a passing gate hasn't already covered. Don't update
+`status.md` with claims you haven't verified.
 
 ## Verification
 
@@ -29,7 +30,8 @@ files. Don't update `status.md` with claims you haven't verified.
 - Before calling non-trivial work complete, have the `verifier` subagent check
   the claims. Don't grade your own work. When a manager session delegates to
   worker agents, the manager runs the verifier, once per feature; workers don't
-  run their own.
+  run their own. `/wrapup` doesn't repeat a verifier pass that already covers
+  the work.
 
 ## Git
 
@@ -40,6 +42,10 @@ files. Don't update `status.md` with claims you haven't verified.
 - Pushes need approval (enforced by the confirm-push hook). A repo can opt in
   with `.claude/push-branches`: plain pushes of the branches it lists skip the
   permission prompt, but still ask me in chat first.
+- The two rules above are the default, for projects without an automated
+  gate. A project whose `CLAUDE.md` names a gate (one check script that hooks
+  and CI both run) may set its own commit and push rule, and that rule wins
+  there.
 - Never rewrite history that has been pushed without asking first.
 
 ## Scope

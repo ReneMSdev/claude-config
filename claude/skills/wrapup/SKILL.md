@@ -1,7 +1,6 @@
 ---
 name: wrapup
-description: End-of-session accountability. Runs the project's checks, has the verifier subagent confirm what was done, updates docs/status.md, docs/todo.md, and docs/decisions.md with evidence, then proposes a commit.
-disable-model-invocation: true
+description: End-of-session cleanup. Updates docs/status.md, docs/todo.md, and docs/decisions.md with evidence, running checks and the verifier only for work nothing has covered yet, then commits the docs or proposes a commit, as the project's rules say. Run it when the user asks, or at the end of a feature when the project's CLAUDE.md or role prompt says the session runs it itself.
 argument-hint: "[optional note about what this session was for]"
 ---
 
@@ -19,11 +18,17 @@ If `docs/status.md` doesn't exist, stop and suggest running `/new-project` first
 
 ## 2. Run the checks
 
+- **Already covered:** if the verifier or the project's gate (its one check
+  script, or a green CI run) already passed on the current state of a side,
+  don't run that side again. Cite the result (command, result line, commit)
+  and move on. Run only what nothing covers.
 - Map the changed paths (from step 1, including this session's commits) to
-  areas. In a project with sides like `backend/` and `frontend/`, run the
-  check commands listed under **Commands** in the project's `CLAUDE.md`
-  (tests, lint, type-check, build) only for the sides with changed files.
-  Skip the others, and say you skipped them.
+  areas. In a project with sides like `backend/` and `frontend/`, check only
+  the sides with changed files. Skip the others, and say you skipped them.
+- For each side to check: when the project has one check script (e.g.
+  `scripts/check.sh`), run that for the side. Otherwise run the check
+  commands listed under **Commands** in the project's `CLAUDE.md` (tests,
+  lint, type-check, build).
 - **Doc-only session** (only `*.md`, `docs/`, `.claude/` prompt or agent
   files, or other files no check reads): run no checks. Say so, and keep the
   existing evidence in `docs/status.md` as it is, since nothing it covers
@@ -60,13 +65,19 @@ committed yet).
   session (a choice between alternatives, with a reason). Skip it if none were
   made. Don't log routine work here.
 
-## 5. Report and propose a commit
+## 5. Report and commit
 
 Give the user a short summary:
 
 - What was verified, with evidence
 - What was refuted or unverified, and why
 - TODO changes
-- A proposed commit: explicit file paths and a message
+- The commit: explicit file paths and a message
 
-Then wait. Commit only after the user says yes. Never push.
+Default: propose the commit, then wait. Commit only after the user says yes.
+Never push.
+
+In a project whose `CLAUDE.md` lets sessions commit without asking (it names
+an automated gate), commit the doc changes yourself with explicit paths, on
+the branch that rule allows, and say so in the summary. Push only as that
+project's rule allows; never push a production branch without a yes.
